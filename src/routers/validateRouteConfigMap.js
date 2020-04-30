@@ -19,6 +19,11 @@ function validateRouteConfigMap(routeConfigs) {
       !screenComponent ||
       (typeof screenComponent !== 'function' &&
         typeof screenComponent !== 'string' &&
+        (
+          // React Hooks + Special Components introduced in React 16.6
+          typeof screenComponent === 'object' &&
+          !screenComponent.hasOwnProperty('$$typeof')
+        ) &&
         !routeConfig.getScreen)
     ) {
       throw new Error(
