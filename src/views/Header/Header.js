@@ -8,9 +8,10 @@ import {
   StyleSheet,
   View,
   ViewPropTypes,
+  SafeAreaView,
 } from 'react-native';
 import { MaskedViewIOS } from '../../PlatformHelpers';
-import SafeAreaView from 'react-native-safe-area-view';
+// import SafeAreaView from 'react-native-safe-area-view';
 
 import HeaderTitle from './HeaderTitle';
 import HeaderBackButton from './HeaderBackButton';
@@ -24,7 +25,7 @@ const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
 const getAppBarHeight = isLandscape => {
   return Platform.OS === 'ios'
-    ? isLandscape && !Platform.isPad ? 32 : 44
+    ? isLandscape && !Platform.isPad ? 32 : undefined
     : 56;
 };
 
@@ -477,12 +478,13 @@ class Header extends React.PureComponent {
     ];
 
     const { headerForceInset } = options;
-    const forceInset = headerForceInset || { top: 'always', bottom: 'never' };
+    const appBarPT = Platform.select({ ios: 22, default: 0 });
+    const appBarPB = Platform.select({ ios: 26, default: 0 });
 
     return (
-      <SafeAreaView forceInset={forceInset} style={containerStyles}>
+      <SafeAreaView style={containerStyles}>
         <View style={StyleSheet.absoluteFill}>{options.headerBackground}</View>
-        <View style={{ flex: 1 }}>{appBar}</View>
+        <View style={{ flex: 1, paddingTop: appBarPT, paddingBottom: appBarPB }}>{appBar}</View>
       </SafeAreaView>
     );
   }
